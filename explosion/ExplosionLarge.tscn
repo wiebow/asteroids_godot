@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://audio/explosion.wav" type="AudioStream" id=1]
+[ext_resource path="res://explosion/ExplosionLarge.gd" type="Script" id=2]
+[ext_resource path="res://explosion/particle.png" type="Texture" id=3]
+
+[sub_resource type="ParticlesMaterial" id=1]
+lifetime_randomness = 0.8
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( 1, 1, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 150.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 25.0
+damping_random = 0.8
+angle_random = 0.5
+scale = 4.0
+color = Color( 1, 0.376471, 0, 1 )
+hue_variation = 0.17
+hue_variation_random = 1.0
+
+[sub_resource type="Animation" id=2]
+resource_name = "ParticleFade"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Particles2D:process_material:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 4.92458 ),
+"update": 0,
+"values": [ Color( 1, 0.376471, 0, 1 ), Color( 1, 0.376471, 0, 0 ) ]
+}
+
+[node name="ExplosionLarge" type="Node2D"]
+z_index = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_editor_description_": "z-index is 1 to ensure drawn over all other objects in this canvaslayer"
+}
+
+[node name="Particles2D" type="Particles2D" parent="."]
+emitting = false
+amount = 40
+one_shot = true
+explosiveness = 1.0
+randomness = 0.57
+visibility_rect = Rect2( -109.561, -90.2758, 211.648, 190.535 )
+local_coords = false
+process_material = SubResource( 1 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="ExplosionPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "ParticleFade"
+anims/ParticleFade = SubResource( 2 )
+
+[node name="ExplosionDeleteTimer" type="Timer" parent="."]
+autostart = true
+[connection signal="timeout" from="ExplosionDeleteTimer" to="." method="_on_ExplosionDeleteTimer_timeout"]

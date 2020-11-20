@@ -1,0 +1,196 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://gui/GUI_THEME.tres" type="Theme" id=1]
+[ext_resource path="res://states/title/logo.png" type="Texture" id=2]
+[ext_resource path="res://states/title/TitleText.gd" type="Script" id=3]
+[ext_resource path="res://fonts/default_font.tres" type="DynamicFont" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "fire_coloro"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 0.6, 1 ),
+"transitions": PoolRealArray( 0.00012207, 1.36936e-07, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 0, 1 ), Color( 1, 1, 0, 1 ), Color( 0.862745, 0.0784314, 0.235294, 1 ), Color( 0.956863, 0.0470588, 0.133333, 1 ) ]
+}
+
+[node name="TitleTextLayer" type="CanvasLayer"]
+script = ExtResource( 3 )
+
+[node name="Logo" type="TextureRect" parent="."]
+margin_left = 159.0
+margin_top = 123.0
+margin_right = 639.0
+margin_bottom = 271.0
+rect_rotation = -7.3
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="FireToPlayLabel" type="Label" parent="."]
+modulate = Color( 1, 0.388235, 0.278431, 1 )
+margin_top = 550.0
+margin_right = 800.0
+margin_bottom = 566.0
+theme = ExtResource( 1 )
+text = "press fire to play!"
+align = 1
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="FireToPlayAnimation" type="AnimationPlayer" parent="FireToPlayLabel"]
+autoplay = "fire_coloro"
+anims/fire_coloro = SubResource( 1 )
+
+[node name="InstructionLabel" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 64.0
+margin_top = 256.0
+margin_right = 736.0
+margin_bottom = 536.0
+theme = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "
+[center][color=lime]by wdw in 2020!
+
+[color=yellow]written in godot on linux mint
+
+
+
+[color=lime]instructions:
+
+[rainbow freq=3.0 sat=10 val=20]shoot[/rainbow] [color=white]the asteroids
+
+[rainbow freq=3.0 sat=10 val=20]warp[/rainbow][color=white] out of trouble
+
+earn [rainbow freq=3.0 sat=10 val=20] extra life [/rainbow][color=white] at 25.000 points
+
+have fun!"
+text = "
+by wdw in 2020!
+
+written in godot on linux mint
+
+
+
+instructions:
+
+shoot the asteroids
+
+warp out of trouble
+
+earn  extra life  at 25.000 points
+
+have fun!"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="KeyControlLabel" type="RichTextLabel" parent="."]
+margin_left = 64.0
+margin_top = 256.0
+margin_right = 736.0
+margin_bottom = 536.0
+theme = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]
+
+[color=lime]keyboard controls:
+
+
+[color=red]a/s [color=white] or [color=red]arrows left/right [color=white]- turn
+
+[color=red]shift [color=white]or [color=red]arrow up [color=white] - thrust
+
+[color=red]return [color=white]/ [color=red]ctrl [color=white]- fire
+
+[color=red]w [color=white]or [color=red]arrow down[color=white] - warp
+
+[color=red]p [color=white] - pause
+"
+text = "
+
+keyboard controls:
+
+
+a/s  or arrows left/right - turn
+
+shift or arrow up  - thrust
+
+return / ctrl - fire
+
+w or arrow down - warp
+
+p  - pause
+"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="JoyControlLabel" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 64.0
+margin_top = 256.0
+margin_right = 736.0
+margin_bottom = 536.0
+theme = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center]
+
+[color=lime]joypad controls:
+
+
+[color=red]left stick [color=white] [color=white]- turn
+
+[color=red]R2 [color=white] - thrust
+
+[color=red]dshock x[color=white] / [color=red]xbox a[color=white] / [color=red]nint b[color=white] - fire
+
+[color=red]dshock triangle[color=white] / [color=red]xbox y[color=white] / [color=red]nint x[color=white] - warp
+
+[color=red]dshock opt[color=white] / [color=red]xbox start[color=white] / [color=red]nint +[color=white] - pause
+"
+text = "
+
+joypad controls:
+
+
+left stick  - turn
+
+R2  - thrust
+
+dshock x / xbox a / nint b - fire
+
+dshock triangle / xbox y / nint x - warp
+
+dshock opt / xbox start / nint + - pause
+"
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="LabelCycleTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+__meta__ = {
+"_editor_description_": "time between text cycles"
+}
+[connection signal="timeout" from="LabelCycleTimer" to="." method="_on_LabelCycleTimer_timeout"]

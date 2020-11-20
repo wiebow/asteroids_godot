@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://objects/bullets/bullet.png" type="Texture" id=1]
+[ext_resource path="res://objects/BaseObject.tscn" type="PackedScene" id=2]
+[ext_resource path="res://objects/bullets/PlayerBullet.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 0.877089, 0.817313 )
+
+[node name="PlayerBullet" groups=[
+"bullets",
+] instance=ExtResource( 2 )]
+collision_layer = 2
+collision_mask = 12
+script = ExtResource( 3 )
+wrap_buffer = 4
+
+[node name="ObjectCollision" parent="." index="0"]
+shape = SubResource( 1 )
+
+[node name="ObjectSprite" parent="." index="1"]
+texture = ExtResource( 1 )
+[connection signal="area_entered" from="." to="." method="_on_PlayerBullet_area_entered"]

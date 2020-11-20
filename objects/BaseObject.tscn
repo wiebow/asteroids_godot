@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://objects/BaseObject.gd" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 2.78763
+
+[node name="ObjectBase" type="Area2D"]
+scale = Vector2( 4, 4 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_editor_description_": "base object for game objects.  scale is 4!!!!!!"
+}
+
+[node name="ObjectCollision" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="ObjectSprite" type="Sprite" parent="."]
