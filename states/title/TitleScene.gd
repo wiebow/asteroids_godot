@@ -2,18 +2,12 @@ extends Node
 
 func _ready() -> void:
 	_generate_title_rocks()
-	$Fader/FadeRect/FadeAnimation.play("fade_in")
+	$Fader.start_fadein()
 
 
 func _process(_delta) -> void:
 	if Input.is_action_just_pressed("player_fire"):
-		$Fader/FadeRect/FadeAnimation.play("fade_out")
-		$FadeWaitTimer.start()
-
-
-# called when the fade timer has run out
-#func _on_FadeTimer_timeout():
-#	Global.goto_scene("res://states/play/PlayScene.tscn")
+		$Fader.start_fadeout()
 
 
 # specific version of generate rocks for title screen
@@ -32,5 +26,6 @@ func _generate_title_rocks() -> void:
 		rocks += 1
 
 
-func _on_FadeWaitTimer_timeout():
+# called when the fader is finished
+func _on_Fader_fade_finished(anim_name):
 	Switcher.goto_scene("res://states/play/PlayScene.tscn")

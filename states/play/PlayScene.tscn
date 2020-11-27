@@ -28,8 +28,6 @@ script = ExtResource( 1 )
 
 [node name="Fader" parent="Level" instance=ExtResource( 2 )]
 
-[node name="FadeTimer" type="Timer" parent="Level"]
-
 [node name="ExtraLifeSound" type="AudioStreamPlayer" parent="Level"]
 stream = ExtResource( 10 )
 volume_db = -12.0
@@ -59,5 +57,5 @@ pause_mode = 2
 [connection signal="game_over" from="Level/Player" to="Level" method="_on_Player_game_over"]
 [connection signal="player_died" from="Level/Player" to="Level" method="_on_Player_player_died"]
 [connection signal="player_warp" from="Level/Player" to="Level" method="_on_Player_player_warp"]
-[connection signal="timeout" from="Level/FadeTimer" to="Level" method="_on_FadeTimer_timeout"]
+[connection signal="fade_finished" from="Level/Fader" to="Level" method="_on_Fader_fade_finished"]
 [connection signal="timeout" from="Level/SaucerCreationTimer" to="Level" method="_on_SaucerCreationTimer_timeout"]

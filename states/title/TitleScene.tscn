@@ -14,11 +14,5 @@ __meta__ = {
 
 [node name="TitleTextLayer" parent="TitlesCanvasLayer" instance=ExtResource( 2 )]
 
-[node name="FadeWaitTimer" type="Timer" parent="."]
-one_shot = true
-__meta__ = {
-"_editor_description_": ""
-}
-
 [node name="Fader" parent="." instance=ExtResource( 4 )]
-[connection signal="timeout" from="FadeWaitTimer" to="." method="_on_FadeWaitTimer_timeout"]
+[connection signal="fade_finished" from="Fader" to="." method="_on_Fader_fade_finished"]

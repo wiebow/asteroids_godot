@@ -8,7 +8,7 @@
 extends Node
 
 onready var start_sound:AudioStreamPlayer = $LevelStartSound
-onready var fader = $Fader/FadeRect/FadeAnimation
+onready var fader = $Fader
 onready var player = $Player
 onready var gui = $GUI
 onready var saucer_timer = $SaucerCreationTimer
@@ -23,7 +23,7 @@ func _ready():
 	gui.update_all()
 	player.reset()
 	_start_level()
-	fader.play("fade_in")
+	fader.start_fadein()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,8 +48,7 @@ func _process(_delta):
 
 
 func _goto_titlescreen() -> void:
-	fader.play("fade_out")
-	$FadeTimer.start()
+	fader.start_fadeout()
 
 
 func _start_level():
@@ -214,12 +213,6 @@ func _on_Player_game_over():
 		$GameOverBoom.play()
 
 
-# the timer in this node is what triggers the scene change
-# not the actual fader. Can this be made better?
-func _on_FadeTimer_timeout():
-	Switcher.goto_scene("res://states/title/TitleScene.tscn")
-
-
 # called when the saucer creation timer has expired
 # we then see if we want to actually create a saucer
 # no saucer is created when there already is one
@@ -231,3 +224,8 @@ func _on_SaucerCreationTimer_timeout():
 	if Game.current_saucer_count:
 		return
 	_generate_saucer()
+
+
+func _on_Fader_fade_finished(anim_name):
+	if anim_name == "fade_out":
+		Switcher.goto_scene("res://states/title/TitleScene.tscn")
