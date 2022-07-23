@@ -15,4 +15,5 @@ __meta__ = {
 [node name="TitleTextLayer" parent="TitlesCanvasLayer" instance=ExtResource( 2 )]
 
 [node name="Fader" parent="." instance=ExtResource( 4 )]
+
 [connection signal="fade_finished" from="Fader" to="." method="_on_Fader_fade_finished"]

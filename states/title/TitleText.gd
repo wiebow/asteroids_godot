@@ -17,7 +17,7 @@ func _ready():
 
 
 func _on_LabelCycleTimer_timeout():
-	
+
 	#cycle through the labels
 	if inst.visible == true:
 		inst.visible = false

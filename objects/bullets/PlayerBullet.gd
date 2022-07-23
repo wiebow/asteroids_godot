@@ -16,7 +16,7 @@ func _physics_process(_delta) -> void:
 	# update life and remove self when life has run out.
 	life -= 1 # * delta
 	if life == 0:
-		queue_free()	
+		queue_free()
 
 
 func initialize( new_position: Vector2, new_degrees: float ) -> void:
@@ -29,7 +29,7 @@ func initialize( new_position: Vector2, new_degrees: float ) -> void:
 
 func _on_PlayerBullet_area_entered(area):
 	if area.is_in_group("asteroids"):
-		queue_free()		
+		queue_free()
 	elif area.is_in_group("saucer"):
 		queue_free()
 

@@ -29,3 +29,4 @@ func _generate_title_rocks() -> void:
 # called when the fader is finished
 func _on_Fader_fade_finished(anim_name):
 	Switcher.goto_scene("res://states/play/PlayScene.tscn")
+	

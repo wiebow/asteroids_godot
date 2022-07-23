@@ -38,7 +38,7 @@ __meta__ = {
 }
 
 [node name="FireToPlayLabel" type="Label" parent="."]
-modulate = Color( 1, 0.388235, 0.278431, 1 )
+modulate = Color( 1, 1, 0, 1 )
 margin_top = 550.0
 margin_right = 800.0
 margin_bottom = 566.0
@@ -193,4 +193,5 @@ autostart = true
 __meta__ = {
 "_editor_description_": "time between text cycles"
 }
+
 [connection signal="timeout" from="LabelCycleTimer" to="." method="_on_LabelCycleTimer_timeout"]
