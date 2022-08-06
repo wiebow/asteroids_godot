@@ -1,19 +1,13 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://objects/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://objects/player/player.png" type="Texture" id=2]
 [ext_resource path="res://objects/BaseObject.tscn" type="PackedScene" id=3]
-[ext_resource path="res://audio/warp.wav" type="AudioStream" id=4]
-[ext_resource path="res://audio/bullet.wav" type="AudioStream" id=5]
+[ext_resource path="res://objects/player/warp.wav" type="AudioStream" id=4]
+[ext_resource path="res://objects/player/bullet.wav" type="AudioStream" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 2.89462, 0.656784 )
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 1.81006, 1.07405 )
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 0.725494, 0.948906 )
 
 [sub_resource type="Animation" id=4]
 length = 0.3
@@ -32,47 +26,44 @@ tracks/0/keys = {
 "values": [ true, false ]
 }
 
-[node name="Player" groups=[
-"player",
-] instance=ExtResource( 3 )]
-position = Vector2( 416.824, 274.407 )
+[node name="Player" groups=["player"] instance=ExtResource( 3 )]
+position = Vector2( 400, 300 )
 z_index = 1
-collision_mask = 28
+collision_mask = 12
 script = ExtResource( 1 )
 wrap_buffer = 8
 
 [node name="ObjectCollision" parent="." index="0"]
-position = Vector2( -0.458855, 1.54329 )
+visible = false
+position = Vector2( 0, 2 )
 shape = SubResource( 1 )
+disabled = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
-position = Vector2( -0.500557, -0.0834274 )
-shape = SubResource( 2 )
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="." index="2"]
-position = Vector2( -0.542274, -2.08569 )
-shape = SubResource( 3 )
-
-[node name="ObjectSprite" parent="." index="3"]
+[node name="ObjectSprite" parent="." index="1"]
+visible = false
 modulate = Color( 1, 0, 0, 1 )
 texture = ExtResource( 2 )
 
-[node name="InvincibleTimer" type="Timer" parent="." index="4"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." index="2"]
+polygon = PoolVector2Array( 2.5, 2.5, 2.5, 1.5, 1.5, 1.5, 1.5, -0.5, 0.5, -0.5, 0.5, -2.5, -0.5, -2.5, -0.5, -0.5, -1.5, -0.5, -1.5, 1.5, -2.5, 1.5, -2.5, 2.5 )
+
+[node name="InvincibleTimer" type="Timer" parent="." index="3"]
 wait_time = 2.0
 one_shot = true
 
-[node name="InvinciblePlayer" type="AnimationPlayer" parent="." index="5"]
+[node name="InvinciblePlayer" type="AnimationPlayer" parent="." index="4"]
 anims/invincible_flash = SubResource( 4 )
 
-[node name="WarpSoundPlayer" type="AudioStreamPlayer2D" parent="." index="6"]
-stream = ExtResource( 4 )
-
-[node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="." index="7"]
-stream = ExtResource( 5 )
-
-[node name="DeathTimer" type="Timer" parent="." index="8"]
+[node name="DelayTimer" type="Timer" parent="." index="5"]
 wait_time = 2.0
 one_shot = true
+
+[node name="WarpPlayer" type="AudioStreamPlayer2D" parent="." index="6"]
+stream = ExtResource( 4 )
+
+[node name="BulletPlayer" type="AudioStreamPlayer2D" parent="." index="7"]
+stream = ExtResource( 5 )
+
 [connection signal="area_entered" from="." to="." method="_on_Player_area_entered"]
 [connection signal="timeout" from="InvincibleTimer" to="." method="_on_InvincibleTimer_timeout"]
-[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
+[connection signal="timeout" from="DelayTimer" to="." method="_on_DeathTimer_timeout"]

@@ -1,31 +1,32 @@
 
 # player object script
 
+# extends the base scripts which handles movement
+# and has variables for ration, speed etc.
 extends "res://objects/BaseObject.gd"
-
-# player can send this signal
-# these signals are connected to the play scene in the editor.
-signal player_died
-signal player_warp
-signal game_over
-
-# variables for easier coding
-onready var player_sprite = $ObjectSprite
 
 const THRUST : float = 10.0
 const MAX_SPEED : float = 400.0
 const ROTATION_SPEED : float = 5.0 * 60
 
 var dead : bool
+var lives : int = 0
+var warps : int = 0
 
-# used to find the parent scene. we add bullets to it
-# and it also holds the score counter scenes etc.
-# var my_parent
+var bullet_node : Node2D
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+# variables for easier coding
+onready var player_sprite : Sprite = $ObjectSprite
+onready var warp_sound : AudioStreamPlayer2D = $WarpPlayer
+onready var bullet_sound : AudioStreamPlayer2D = $BulletPlayer
+
+onready var delay_timer : Timer = $DelayTimer
+onready var invincible_timer : Timer = $InvincibleTimer
+onready var collision_shape : CollisionPolygon2D = $CollisionPolygon2D
+
+
+func _ready() -> void:
 	pass
-#	my_parent = get_node("../")
 
 
 # performed ONCE per frame
@@ -36,6 +37,7 @@ func _physics_process(delta) -> void:
 
 	if Input.is_action_pressed("player_left"):
 		rotation_degrees -= delta * ROTATION_SPEED
+		
 	elif Input.is_action_pressed("player_right"):
 		rotation_degrees += delta * ROTATION_SPEED
 
@@ -49,9 +51,8 @@ func _physics_process(delta) -> void:
 	if Input.is_action_pressed("player_thrust"):
 		var acceleration : Vector2
 
-		# -THRUST because vector pointing up = y value of -1
-		#
-		# rotated method of Vector2 needs a radian, not degrees,
+		# -THRUST because vector pointing up = y value of -1, and
+		# rotated() method of Vector2 needs a radian, not degrees,
 		# so convert that using deg2rad
 		acceleration = Vector2(0, -THRUST).rotated(deg2rad(rotation_degrees))
 
@@ -64,69 +65,71 @@ func _physics_process(delta) -> void:
 	# cap speed
 	if velocity.length() > MAX_SPEED:
 		velocity = velocity.normalized() * MAX_SPEED
-		# velocity is added to position in BaseObject.gd
+		# velocity vector is added to position in BaseObject.gd
 
 
-# get ready to play
+# get ready to play a level
+# this is called by the Play scene when a level starts
+
 func reset() -> void:
 	rotation_degrees = 0
 	velocity = Vector2(0, 0)
 
 	# position player in center (.size returns a Vector2)
-	# divide method returns a new Vector2 , so we can keep doing this.
+	# Vector divide method returns a new Vector2 , so we can keep doing this.
 	position = screen_size / 2
 
-	_invincible()
+	invincible()
 	dead = false
 	player_sprite.visible = true
 
 
-func _create_bullet() -> void :
-	var scene = load("res://objects/bullets/PlayerBullet.tscn")
-	var bullet = scene.instance()
-
-	# set position and speed
-	bullet.initialize( position, rotation_degrees )
-	my_parent.add_child(bullet)
-	$BulletSoundPlayer.play()
+func _create_bullet() -> void:
+	bullet_sound.play()
+	Events.emit_signal("create_bullet", position, rotation_degrees)
 
 
 # warps player to another screen position and slows down
 func _do_warp() -> void:
-	if Game.player_warps:
-		Game.player_warps -= 1
-		emit_signal("player_warp")
+	if warps:
+		warps -= 1
+		Events.emit_signal("gui_change_warps", warps)
 
-		# play on this location
-		$WarpSoundPlayer.play()
-		# change location
-		var screen_size = get_viewport_rect().size
+		warp_sound.play()
+
+		# change player location
+		var screen_size: Vector2 = get_viewport_rect().size
 		position = Vector2(
 			rand_range(50, screen_size.x-50),
 			rand_range(50, screen_size.y-50))
+			
+		# slow down after warp
 		velocity /= 4
 
 
-func _invincible():
-	# activate invincible animation
-	$InvincibleTimer.start(2.5)
+# make the player invincible for 2.5 seconds
+
+func invincible() -> void:
+	collision_shape.disabled = true
+	invincible_timer.start(2.5)
 	$InvinciblePlayer.play("invincible_flash")
 
 
 func is_invincible() -> bool:
-	return $InvinciblePlayer.is_playing()
+	return collision_shape.disabled
 
 
-# called when invincibility timer runs out
-# stops the animation
 func _on_InvincibleTimer_timeout() -> void:
+	collision_shape.disabled = false
 	$InvinciblePlayer.stop()
 	player_sprite.visible = true
 
 
-func _on_Player_area_entered(area):
+# we only check what can kill us
+func _on_Player_area_entered(area) -> void:
 	if is_invincible() == true:
 		return
+		
 	if dead == true:
 		return
 
@@ -136,24 +139,23 @@ func _on_Player_area_entered(area):
 		die()
 	elif area.is_in_group("saucer_bullets"):
 		die()
+		area.queue_free()
 
 
+# the play scene listens to the game_over event
 func die() -> void:
-	my_parent.create_explosion(position)
-	Game.player_spare_lives -= 1
+	Events.emit_signal("create_explosion", self.position)
 
 	dead = true
 	player_sprite.visible = false
-	velocity = Vector2(0, 0)
-	position = screen_size / 2
-
-	if Game.player_spare_lives == -1:
-		emit_signal("game_over")
+	
+	lives -= 1	
+	if lives == -1:
+		Events.emit_signal("game_over")
 	else:
-		emit_signal("player_died")
-		# wait a while before we are returning control to the player
-		$DeathTimer.start(2)
+		Events.emit_signal("gui_change_lives", lives)
+		delay_timer.start()
 
 
-func _on_DeathTimer_timeout():
+func _on_DeathTimer_timeout() -> void:
 	reset()

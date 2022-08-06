@@ -4,11 +4,9 @@
 [ext_resource path="res://objects/saucer/saucer.png" type="Texture" id=2]
 [ext_resource path="res://objects/saucer/Saucer.gd" type="Script" id=3]
 [ext_resource path="res://objects/saucer/spaceEngineLow_002.ogg" type="AudioStream" id=4]
-[ext_resource path="res://audio/bullet.wav" type="AudioStream" id=5]
+[ext_resource path="res://objects/saucer/bullet.wav" type="AudioStream" id=5]
 
-[node name="Saucer" groups=[
-"saucer",
-] instance=ExtResource( 1 )]
+[node name="Saucer" groups=["saucer"] instance=ExtResource( 1 )]
 modulate = Color( 1, 1, 0.588235, 1 )
 scale = Vector2( 1, 1 )
 collision_layer = 8
@@ -30,7 +28,7 @@ volume_db = -10.0
 autoplay = true
 
 [node name="FireDelayTimer" type="Timer" parent="." index="3"]
-wait_time = 2.0
+wait_time = 4.0
 autostart = true
 
 [node name="DirectionChangeTimer" type="Timer" parent="." index="4"]
@@ -39,6 +37,7 @@ autostart = true
 
 [node name="BulletSoundPlayer" type="AudioStreamPlayer2D" parent="." index="5"]
 stream = ExtResource( 5 )
+
 [connection signal="area_entered" from="." to="." method="_on_Saucer_area_entered"]
 [connection signal="timeout" from="FireDelayTimer" to="." method="_on_FireDelayTimer_timeout"]
 [connection signal="timeout" from="DirectionChangeTimer" to="." method="_on_DirectionChangeTimer_timeout"]

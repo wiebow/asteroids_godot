@@ -1,19 +1,17 @@
 
+# asteroid.gd
+
+# Events caused by the asteroid are picked up by the play scene.
+
 extends "res://objects/BaseObject.gd"
 
 # award for player
-var score_award : int
+var points : int
 # angle changes this amount per frame
-var rotation_dir = 0
+var rotation_dir := 0
 
 # 1 is big, 2 is medium, 3 is small
-var my_size:int
-
-# asteroid can send these signals
-# these signals are listened to from the PlayScene.
-signal asteroid_exploded(position, size)
-signal asteroid_hit_by_bullet(score_award)
-
+var my_size : int
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -41,52 +39,52 @@ func initialize(size : int) -> void:
 		1:
 			$AsteroidSprite.play("big")
 			rotation_dir = rand_range(-1, 1)
-#			$AsteroidSprite.apply_scale((Vector2(3.5, 3.5)))
 			$ObjectCollision.apply_scale(Vector2(9.0, 9.0))
-			score_award = 100
+			points = 100
 		2:
 			$AsteroidSprite.play("normal")
 			rotation_dir = rand_range(-2, 2)
-#			$AsteroidSprite.apply_scale((Vector2(3.0, 3.0)))
 			$ObjectCollision.apply_scale(Vector2(5.0, 5.0))
-			score_award = 150
+			points = 150
 		3:
 			$AsteroidSprite.play("small")
 			rotation_dir = rand_range(-4, 4)
 			$AsteroidSprite.apply_scale((Vector2(0.8, 0.8)))
 			$ObjectCollision.apply_scale(Vector2(2.0, 2.0))
-			score_award = 300
+			points = 300
 
 	# set velocity according to size
 	set_velocity(randi() % 25 + (size * 30))
 
 
-
-func set_velocity(speed):
+func set_velocity(speed) -> void:
 	# rocks always go into a random direction
 	velocity = Vector2(rand_range(-1, 1), rand_range(-1, 1))
 	velocity *= speed
 
 
-# We only check groups that can destroy us!
+# check the collisions that can harm this asteroid.
 func _on_Asteroid_area_entered(area):
 	if area.is_in_group("bullets"):
-		emit_signal("asteroid_hit_by_bullet", score_award)
+		Events.emit_signal("points_awarded", points, position)
+		area.queue_free()
 		_die()
+
+	# the saucer can also destroy asteroids with its bullets
+	# robbing you of points!
 	elif area.is_in_group("saucer_bullets"):
+#		Events.emit_signal("points_awarded", points)
+		area.queue_free()
 		_die()
 
 
+# get rid of this asteroid. and generate new ones if needed
 func _die() -> void:
-	Game.current_rock_count -= 1
-	my_parent.create_explosion(position)
+	Events.emit_signal("create_explosion", position)
 
-	my_parent.add_label(position, str(score_award))
-
-	# level node will listen and create smaller asteroids on this
-	# location when needed
+	# do not generate asteroids if we are already of the smallest size.
 	if my_size != 3:
-		emit_signal("asteroid_exploded", position, my_size)
+		Events.emit_signal("create_asteroid", position, my_size + 1)
 
 	queue_free()
 

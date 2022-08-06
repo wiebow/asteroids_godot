@@ -7,6 +7,9 @@ radius = 2.78763
 
 [node name="ObjectBase" type="Area2D"]
 scale = Vector2( 4, 4 )
+collision_layer = 0
+collision_mask = 0
+input_pickable = false
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,

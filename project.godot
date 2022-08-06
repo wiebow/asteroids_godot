@@ -22,13 +22,14 @@ _global_script_class_icons={
 
 config/name="MyAsteroids"
 config/description="A simple asteroid test game in Godot"
-run/main_scene="res://main/Main.tscn"
+run/main_scene="res://main.tscn"
 config/icon="res://objects/asteroid/rocks_med.png"
 
 [autoload]
 
-Switcher="*res://autoload/Switcher.gd"
-Game="*res://autoload/Global.gd"
+Events="*res://autoload/events.gd"
+SceneSwitcher="*res://autoload/scene_switcher.gd"
+Score="*res://autoload/score.gd"
 
 [debug]
 
@@ -37,11 +38,16 @@ settings/fps/force_fps=60
 [display]
 
 window/size/width=800
-window/size/test_width=800
-window/size/test_height=600
+window/size/test_width=1600
+window/size/test_height=1200
 window/vsync/vsync_via_compositor=true
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
+
+[editor]
+
+version_control_autoload_on_startup=true
+version_control_plugin_name="GitAPI"
 
 [gdnative]
 
@@ -131,16 +137,25 @@ player_warp={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
-game_pause={
+player_pause={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":80,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":11,"pressure":0.0,"pressed":false,"script":null)
  ]
 }
-game_quit={
+player_quit={
 "deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":81,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
-, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_up={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777232,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+player_down={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777234,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 
@@ -159,6 +174,7 @@ pointing/emulate_mouse_from_touch=false
 [rendering]
 
 2d/snapping/use_gpu_pixel_snap=true
-environment/default_clear_color=Color( 0, 0.0196078, 0.0784314, 1 )
+gles3/shaders/shader_compilation_mode=2
+environment/default_clear_color=Color( 0, 0.0392157, 0.0980392, 1 )
 environment/default_environment="res://default_env.tres"
 quality/2d/use_pixel_snap=true

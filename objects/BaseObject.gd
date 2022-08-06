@@ -4,6 +4,9 @@ extends Area2D
 # all scenes derived from this will be able to use these functions
 # they must extend with : extend "../BaseObject.gd"
 
+# main goal is to standardise the screen wrap for all objects in one go.
+
+# variable visible in de godot editor
 export var wrap_buffer : int = 0
 
 var screen_size : Vector2
