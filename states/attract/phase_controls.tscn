@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gui/GUI_THEME.tres" type="Theme" id=1]
+
+[node name="PhaseControls" type="Node2D"]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_top = 260.0
+margin_right = 800.0
+margin_bottom = 600.0
+theme = ExtResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center][color=#00E436] - controls -[/color]
+
+[color=#FF004D]a[/color] / [color=#FF004D]s[/color] - rotate
+[color=#FF004D]shift[/color] - thrust
+[color=#FF004D]enter[/color] - fire
+[color=#FF004D]w[/color] - warp
+[color=#FF004D]p[/color] -pause
+[color=#FF004D]esc[/color] - quit[/center]"
+meta_underlined = false
+text = " - controls -
+
+a / s - rotate
+shift - thrust
+enter - fire
+w - warp
+p -pause
+esc - quit"
+fit_content_height = true
+scroll_active = false
