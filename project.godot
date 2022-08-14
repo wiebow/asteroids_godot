@@ -8,16 +8,6 @@
 
 config_version=4
 
-_global_script_classes=[ {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://addons/godot-git-plugin/git_api.gdns"
-} ]
-_global_script_class_icons={
-"GitAPI": ""
-}
-
 [application]
 
 config/name="MyAsteroids"
@@ -49,9 +39,13 @@ window/stretch/aspect="keep"
 version_control_autoload_on_startup=true
 version_control_plugin_name="GitAPI"
 
+[editor_plugins]
+
+enabled=PoolStringArray(  )
+
 [gdnative]
 
-singletons=[ "res://addons/godot-git-plugin/git_api.gdnlib" ]
+singletons=[  ]
 
 [importer_defaults]
 
