@@ -1,6 +1,6 @@
-extends Node2D
+# explosion.gd
 
-# explosion script
+extends Node2D
 
 
 # Called when the node enters the scene tree for the first time.
@@ -8,6 +8,6 @@ func _ready():
 	$ExplosionPlayer.play()
 	$Particles2D.emitting = true  # BUG!!!!
 
-# remove myself from the scene once I am done
-func _on_ExplosionDeleteTimer_timeout():
-	queue_free()
+	# remove after 1 sec
+	var tween : SceneTreeTween = self.create_tween()
+	tween.tween_callback(self, "queue_free").set_delay(1)

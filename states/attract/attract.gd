@@ -1,3 +1,5 @@
+# attract.gd
+
 extends Node
 
 # This script will cycle through the attract phases.
@@ -6,8 +8,10 @@ extends Node
 
 const ATTRACT_DELAY := 10
 
-onready var attract_phases : Array = [$PhaseHiscore, $PhaseControls, $PhaseInstructions]
 var phases_index := 0
+
+onready var attract_phases : Array = [$PhaseHiscore, $PhaseControls, $PhaseInstructions]
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -22,17 +26,17 @@ func _ready():
 	
 	# enable the first attract phase
 	_cycle()
-	
+
 
 func _cycle() -> void:
+	
+	# This tweening is done in a sequential manner
 	var phase = attract_phases[phases_index]
 	var tween: SceneTreeTween = phase.create_tween()
 	tween.tween_property(phase, "modulate", Color(1, 1, 1, 1.0), 1.0)
 	tween.tween_property(phase, "modulate", Color(1, 1, 1, 0.0), 1.0).set_delay(ATTRACT_DELAY - 2)
 
 	# prepare for the next phase
-	
 	phases_index += 1
 	if phases_index > attract_phases.size()-1:
 		phases_index = 0
-

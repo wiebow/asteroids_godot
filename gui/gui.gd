@@ -1,9 +1,9 @@
-# GUI.gd
+# gui.gd
+
+extends CanvasLayer
 
 # This script updates the gui elements according to the values
 # passed by the connected signals.
-
-extends CanvasLayer
 
 onready var score: Label = $MarginContainer/VBoxContainer/ScoreContainer/Playerscore
 onready var hi_score: Label = $MarginContainer/VBoxContainer/ScoreContainer/Highscore

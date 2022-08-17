@@ -1,16 +1,17 @@
+# phase_hiscore.gd
+
 extends Node2D
 
 # This scipt fills the columns when the scene is started.
 
-onready var namecolumn : RichTextLabel = $VBoxContainer/HBoxContainer/NameColumn
-onready var scorecolumn : RichTextLabel = $VBoxContainer/HBoxContainer/ScoreColumn
+onready var namecolumn := $VBoxContainer/HBoxContainer/NameColumn as RichTextLabel
+onready var scorecolumn := $VBoxContainer/HBoxContainer/ScoreColumn as RichTextLabel
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
 	# set the names and score colums texts
-
 	var list : Array = Score.get_score_entries()
 
 	# add a rainbow effect to the first entry
@@ -31,4 +32,3 @@ func _ready():
 
 	namecolumn.bbcode_text = namecolumn.bbcode_text + rest_of_names + "[/center]"
 	scorecolumn.bbcode_text = scorecolumn.bbcode_text + rest_of_scores
-	

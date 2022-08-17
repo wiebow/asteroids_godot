@@ -1,8 +1,9 @@
 # score.gd
-# Autoload script, also requirement for the gameover scene.
-# This scipt handles score, hiscore, and load/save
 
 extends Node
+
+# Autoload script, also requirement for the gameover scene.
+# This scipt handles score, hiscore, and load/save
 
 # file name for the hiscore list.
 # Where this is saved depends on the system.
@@ -17,17 +18,10 @@ const FILE_NAME: String = "user://game-data.json"
 # The 11th item is not printed , but used as the
 # place of entry for a new item.
 var score_list: Array = [
-	[12060, "wdw"],
-	[12000, "tim"],
-	[11000, "cis"],
-	[10000, "mrc"],
-	[9000, "amg"],
-	[8000, "dee"],
-	[7000, "s-i"],
-	[6000, "mvg"],
-	[5000, "myy"],
-	[4000, "gwd"],
-	[0, ""]
+	[12060, "wdw"], [12000, "tim"], [11000, "cis"],
+	[10000, "mrc"], [9000, "amg"], [8000, "dee"],
+	[7000, "s-i"], [6000, "mvg"], [5000, "myy"],
+	[4000, "gwd"], [0, ""]
 ]
 
 
@@ -128,15 +122,3 @@ class MyCustomSorter:
 		if a[0] > b[0]:
 			return true
 		return false
-
-
-#func debug_print() -> void:
-#	add_score_to_list()
-#
-#	# print 10 entries
-#	var i: int = 0
-#	var entry: Array
-#	while i < score_list.size() - 1:
-#		entry = score_list[i]
-#		print( "%06d" % entry[0], " ", entry[1] )
-#		i += 1

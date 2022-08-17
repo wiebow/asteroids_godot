@@ -1,14 +1,14 @@
-
 # pointslabel.gd
-# a simple scene to place a label on the playfield
 
 extends Node2D
+
+# a simple scene to place text on the playfield
 
 
 func initialize(new_text: int, new_position: Vector2) -> void:
 	position = new_position
 	$ScoreLabel.text = String(new_text)
 
-
-func _on_Timer_timeout():
-	queue_free()
+	# remove after 1 sec
+	var tween : SceneTreeTween = self.create_tween()
+	tween.tween_callback(self, "queue_free").set_delay(1)

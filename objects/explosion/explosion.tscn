@@ -71,8 +71,3 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "ParticleFade"
 anims/ParticleFade = SubResource( 2 )
-
-[node name="ExplosionDeleteTimer" type="Timer" parent="."]
-autostart = true
-
-[connection signal="timeout" from="ExplosionDeleteTimer" to="." method="_on_ExplosionDeleteTimer_timeout"]

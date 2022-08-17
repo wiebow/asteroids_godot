@@ -1,14 +1,10 @@
-# Main.gd
+# main.gd
+
+extends Node
 
 # Main scene that will hold all the other game scenes.
 # See the scene_switcher autoload script!
 # Also does initial setup in the _ready function.
-
-
-# references:
-# palette: https://pico-8.fandom.com/wiki/Palette
-
-extends Node
 
 func _ready() -> void:
 	

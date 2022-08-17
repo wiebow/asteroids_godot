@@ -1,3 +1,5 @@
+# pause.gd
+
 extends CanvasLayer
 
 # This scene must be placed in the Play scene
@@ -8,7 +10,6 @@ func _ready():
 	$PauseDisplay.visible = false
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 
 	# if the Play script game_over bool is set then don't

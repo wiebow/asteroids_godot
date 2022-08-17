@@ -1,5 +1,7 @@
 # scene_switcher.gd
 
+extends Node
+
 # Add this script as an autoload script in the project settings.
 # This script allows you to swap out the current scene
 # for another scene. In this way, the game can change state.
@@ -11,7 +13,6 @@
 # goto_scene to select the new scene. This new scene should
 # call a fade_in.
 
-extends Node
 
 var current_scene = null
 
