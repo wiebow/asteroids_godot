@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://objects/asteroid/asteroid.gd" type="Script" id=1]
+[ext_resource path="res://objects/base_object.tscn" type="PackedScene" id=2]
+[ext_resource path="res://objects/asteroid/rocks_big.png" type="Texture" id=3]
+[ext_resource path="res://objects/asteroid/rocks_sml.png" type="Texture" id=4]
+[ext_resource path="res://objects/asteroid/rocks_med.png" type="Texture" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": false,
+"name": "big",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": false,
+"name": "normal",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": false,
+"name": "small",
+"speed": 5.0
+} ]
+
+[node name="Asteroid" groups=["asteroids"] instance=ExtResource( 2 )]
+scale = Vector2( 1.5, 1.5 )
+collision_layer = 4
+collision_mask = 11
+script = ExtResource( 1 )
+wrap_buffer = 40
+
+[node name="ObjectSprite" parent="." index="1"]
+visible = false
+
+[node name="AsteroidSprite" type="AnimatedSprite" parent="." index="2"]
+frames = SubResource( 1 )
+animation = "small"
+
+[connection signal="area_entered" from="." to="." method="_on_Asteroid_area_entered"]
